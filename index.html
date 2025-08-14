@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chúc mừng sinh nhật 🎉</title>
+  <meta name="description" content="Trang web chúc mừng sinh nhật đơn giản, đẹp, dễ tùy biến." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#ff8bd1; --bg2:#ffd3a5; --primary:#ffffff; --accent:#ff5e7e; --ink:#2a2a2a; --glass:rgba(255,255,255,.15);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:"Poppins", system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color:var(--ink);
+      background: radial-gradient(1200px 700px at 20% 10%, var(--bg1), transparent 60%),
+                  radial-gradient(1000px 600px at 90% 80%, var(--bg2), transparent 60%),
+                  linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+      overflow:hidden;
+    }
+    .stars{position:fixed; inset:0; pointer-events:none; background-image:radial-gradient(#ffffff99 1px, transparent 1px); background-size:3px 3px; opacity:.2}
+    .container{min-height:100%; display:grid; place-items:center; padding:24px}
+
+    .card{
+      width:clamp(320px, 90vw, 920px);
+      background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.35));
+      backdrop-filter: blur(10px) saturate(120%);
+      border:1px solid rgba(255,255,255,.35);
+      border-radius:24px; box-shadow:0 20px 80px rgba(0,0,0,.15);
+      padding:28px; position:relative; overflow:hidden;
+    }
+    .badge{position:absolute; top:14px; right:14px; background:#fff3; color:#7a1a36; padding:6px 10px; border-radius:999px; font-size:12px; letter-spacing:.5px; backdrop-filter: blur(6px)}
+
+    .header{display:flex; gap:22px; align-items:center; flex-wrap:wrap}
+    .avatar{width:120px; height:120px; border-radius:50%; flex:0 0 auto; overflow:hidden; border:3px solid #fff8; box-shadow:0 10px 25px rgba(0,0,0,.15)}
+    .avatar img{width:100%; height:100%; object-fit:cover}
+    .title{flex:1 1 280px}
+    h1{margin:0; font-size:clamp(28px, 4vw, 42px); line-height:1.1}
+    .subtitle{margin:.25rem 0 0; opacity:.8}
+
+    .message{margin:20px 0 10px; font-size:clamp(16px, 2.1vw, 20px)}
+
+    .actions{display:flex; flex-wrap:wrap; gap:12px; margin-top:14px}
+    .btn{
+      appearance:none; border:0; padding:12px 18px; border-radius:14px; cursor:pointer; font-weight:700;
+      box-shadow:0 8px 20px rgba(0,0,0,.15); transition: transform .06s ease, box-shadow .2s ease;
+    }
+    .btn-primary{background:var(--accent); color:white}
+    .btn-ghost{background:rgba(255,255,255,.5);}
+    .btn:active{transform: translateY(2px); box-shadow:0 6px 14px rgba(0,0,0,.2)}
+
+    .footer{display:flex; justify-content:space-between; align-items:center; gap:14px; margin-top:18px; opacity:.85; font-size:14px; flex-wrap:wrap}
+
+    /* Balloons */
+    .balloons{position:fixed; inset:0; pointer-events:none; overflow:hidden}
+    .balloon{position:absolute; font-size:clamp(26px,3.5vw,40px); animation:float 12s linear infinite; filter: drop-shadow(0 4px 6px rgba(0,0,0,.2))}
+    @keyframes float{0%{transform: translateY(110vh) rotate(0)} 100%{transform: translateY(-120vh) rotate(20deg)}}
+
+    /* Confetti canvas on top */
+    canvas#confetti{position:fixed; inset:0; pointer-events:none}
+
+    /* Modal */
+    dialog{
+      border:none; border-radius:20px; padding:0; width:min(560px, 92vw);
+      background:linear-gradient(180deg, #fff, #fff8);
+      box-shadow:0 30px 120px rgba(0,0,0,.3); overflow:hidden;
+    }
+    .modal-head{padding:22px 22px 0}
+    .modal-body{padding:0 22px 22px}
+    .modal-foot{padding:16px 22px 22px; display:flex; justify-content:flex-end}
+
+    /* Utilities */
+    .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+  </style>
+</head>
+<body>
+  <div class="stars" aria-hidden="true"></div>
+  <canvas id="confetti" width="800" height="600" aria-hidden="true"></canvas>
+  <div class="balloons" aria-hidden="true" id="balloons"></div>
+
+  <div class="container">
+    <main class="card" role="main" aria-label="Thiệp sinh nhật">
+      <span class="badge">✨ Special Day</span>
+      <section class="header">
+        <div class="avatar" aria-hidden="true">
+          <!-- Thay ảnh này bằng ảnh của người nhận -->
+          <img src="z6908050025452_59b4b5a2f4ce11ee44e2625eb8a62ae3.jpg" alt="Ảnh người nhận"/>
+        </div>
+        <div class="title">
+          <h1>Chúc mừng sinh nhật <span id="receiver">Manh</span>! 🎂</h1>
+          <p class="subtitle">Chúc em gái một ngày sinh nhật ngập tràn niềm vui, tiếng cười, bánh kem, quà cáp và… những điều ngọt ngào như socola nhưng không béo😆💖</p>
+        </div>
+      </section>
+
+      <section class="message">
+        <p>
+          Chúc em tuổi mới học thì vô như gió, làm bài IELTS mượt như chơi game, xinh đẹp như idol Hàn nhưng vẫn giữ nguyên độ lầy để chị còn có chuyện mà cà khịa mỗi ngày hé hé.
+        </p>
+      </section>
+
+      <section class="actions">
+        <button class="btn btn-primary" id="btnGift">🎁 Mở quà</button>
+        <button class="btn btn-ghost" id="btnMusic">▶️ Phát nhạc</button>
+        <button class="btn btn-ghost" id="btnShare">🔗 Chia sẻ</button>
+      </section>
+
+      <section class="footer">
+        <div>— Gửi từ <strong id="sender">Bạn thân</strong> với rất nhiều yêu thương.</div>
+        <div><small>Tip: Nhấn "Mở quà" để bắn confetti 🎉</small></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Nhạc: đặt file mp3 của bạn cùng thư mục và sửa src bên dưới (tuân thủ chính sách autoplay của trình duyệt) -->
+  <audio id="music" preload="auto">
+    <source src="music.mp3" type="audio/mpeg" />
+  </audio>
+
+  <!-- Modal lời chúc thêm -->
+  <dialog id="wishModal">
+    <div class="modal-head">
+      <h2 style="margin:0">🎉 Bất ngờ nhỏ ồ là lá</h2>
+      <p style="opacity:.8;margin:.35rem 0 1rem">Một vài lời yêu thương gửi đến ngày đặc biệt này.</p>
+    </div>
+    <div class="modal-body">
+      <ul style="line-height:1.8; padding-left:1.2rem; margin:0">
+        <li>Mong mọi điều tốt đẹp nhất sẽ luôn mỉm cười.</li>
+        <li>Điều ước hôm nay sẽ hóa thành hiện thực sớm thôi ( ielts cứ phải gọi là 7. trở lên).</li>
+        <li>Hãy luôn tỏa sáng theo cách của riêng mình! 🌟</li>
+      </ul>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-primary" id="closeModal">Đóng</button>
+    </div>
+  </dialog>
+
+  <script>
+    // ======= TÙY CHỈNH NHANH =======
+    const RECEIVER_NAME = "Minh Anh la là lá la hẹ hẹ";    // 👉 tên người nhận
+    const SENDER_NAME   = "Chị gái xinh đẹp tuyệt trần"; // 👉 tên người gửi
+
+    document.getElementById('receiver').textContent = RECEIVER_NAME;
+    document.getElementById('sender').textContent = SENDER_NAME;
+
+    // ======= Bóng bay ngẫu nhiên =======
+    const balloonsWrap = document.getElementById('balloons');
+    const BALLOON_COUNT = 18;
+    const EMOJIS = ['🎈','🎈','🎈','🎉','💖','🎊'];
+    for(let i=0;i<BALLOON_COUNT;i++){
+      const b = document.createElement('div');
+      b.className = 'balloon';
+      b.textContent = EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
+      const left = Math.random()*100;
+      const delay = Math.random()*12;
+      const dur = 10 + Math.random()*10;
+      b.style.left = left + 'vw';
+      b.style.animationDuration = dur + 's';
+      b.style.animationDelay = -delay + 's';
+      balloonsWrap.appendChild(b);
+    }
+
+    // ======= Confetti đơn giản bằng canvas =======
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    function resize(){canvas.width = innerWidth; canvas.height = innerHeight}
+    addEventListener('resize', resize); resize();
+
+    let confetti = [];
+    function shootConfetti(x = innerWidth/2, y = innerHeight/2){
+      const pieces = 180;
+      for(let i=0;i<pieces;i++){
+        confetti.push({
+          x, y,
+          vx: (Math.random()*2-1)*6,
+          vy: -Math.random()*8 - 3,
+          g: 0.18 + Math.random()*0.12,
+          size: 6 + Math.random()*7,
+          rot: Math.random()*Math.PI,
+          vr: (Math.random()*2-1)*0.2,
+          shape: Math.random()<.5 ? 'rect' : 'tri',
+          life: 120 + Math.random()*80
+        });
+      }
+    }
+
+    function loop(){
+      ctx.clearRect(0,0,canvas.width, canvas.height);
+      confetti = confetti.filter(p=>p.life>0);
+      for(const p of confetti){
+        p.vy += p.g; p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.life--;
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+        ctx.fillStyle = `hsl(${(p.life*3 + p.x*0.1)%360} 90% 60%)`;
+        if(p.shape==='rect'){
+          ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size*0.6);
+        } else {
+          ctx.beginPath();
+          ctx.moveTo(0, -p.size/1.2);
+          ctx.lineTo(-p.size/2, p.size/2);
+          ctx.lineTo(p.size/2, p.size/2);
+          ctx.closePath();
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+      requestAnimationFrame(loop);
+    }
+    loop();
+
+    // ======= Sự kiện nút bấm =======
+    const btnGift = document.getElementById('btnGift');
+    const btnMusic = document.getElementById('btnMusic');
+    const btnShare = document.getElementById('btnShare');
+    const audio = document.getElementById('music');
+    const modal = document.getElementById('wishModal');
+    const closeModal = document.getElementById('closeModal');
+
+    btnGift.addEventListener('click', (e)=>{
+      shootConfetti(innerWidth/2, innerHeight/3);
+      setTimeout(()=>modal.showModal(), 350);
+    });
+
+    btnMusic.addEventListener('click', async ()=>{
+      try{
+        await audio.play();
+        btnMusic.textContent = '⏸️ Tạm dừng';
+        btnMusic.onclick = ()=>{audio.pause(); btnMusic.textContent='▶️ Phát nhạc';};
+      }catch(err){
+        alert('Hãy chọn file nhạc "music.mp3" trong cùng thư mục để phát nhé!');
+      }
+    });
+
+    btnShare.addEventListener('click', async()=>{
+      const url = location.href;
+      const text = `🎉 Chúc mừng sinh nhật ${RECEIVER_NAME}!`;
+      if(navigator.share){ await navigator.share({title:document.title, text, url}); }
+      else{ navigator.clipboard.writeText(url).then(()=>alert('Đã copy liên kết!')); }
+    });
+
+    closeModal.addEventListener('click', ()=>modal.close());
+
+    // Bắn confetti nhẹ khi vào trang
+    setTimeout(()=>shootConfetti(innerWidth*0.5, innerHeight*0.6), 600);
+  </script>
+</body>
+</html>
